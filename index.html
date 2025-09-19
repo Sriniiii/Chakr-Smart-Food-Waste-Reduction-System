@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>चक्र (Chakr) - Smart Food Waste Reduction</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="nav-logo">चक्र</span>
+                <span class="nav-subtitle">Chakr - Smart Food Waste Reduction</span>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" onclick="showSection('dashboard')">
+                    <span class="material-icons">dashboard</span>
+                    Dashboard
+                </button>
+                <button class="nav-item" onclick="showSection('prediction')">
+                    <span class="material-icons">analytics</span>
+                    Prediction
+                </button>
+                <button class="nav-item" onclick="showSection('feedback')">
+                    <span class="material-icons">feedback</span>
+                    Feedback
+                </button>
+                <button class="nav-item" onclick="showSection('donation')">
+                    <span class="material-icons">volunteer_activism</span>
+                    Donation
+                </button>
+                <button class="nav-item" onclick="showSection('leaderboard')">
+                    <span class="material-icons">emoji_events</span>
+                    Leaderboard
+                </button>
+                <button class="nav-item" onclick="showSection('sustainability')">
+                    <span class="material-icons">eco</span>
+                    Sustainability
+                </button>
+                <button class="nav-item" onclick="showSection('rfid')">
+                    <span class="material-icons">nfc</span>
+                    RFID
+                </button>
+            </nav>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span class="material-icons">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="container">
+                <div class="section-header">
+                    <h1>आज का Dashboard (Today's Dashboard)</h1>
+                    <p>Real-time insights into your mess's food waste reduction efforts</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <span class="material-icons">trending_down</span>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="todayWasteReduction">62.4%</h3>
+                            <p>आज का Waste Reduction</p>
+                        </div>
+                    </div>
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <span class="material-icons">co2</span>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="co2Saved">81 kg</h3>
+                            <p>CO₂ Saved Today</p>
+                        </div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <span class="material-icons">restaurant</span>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="mealsDonated">156</h3>
+                            <p>भोजन Donated</p>
+                        </div>
+                    </div>
+                    <div class="stat-card info">
+                        <div class="stat-icon">
+                            <span class="material-icons">people</span>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="activeStudents">427</h3>
+                            <p>Active Students</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <h3>Weekly Food Waste Comparison</h3>
+                        <div style="position: relative; height: 300px;">
+                            <canvas id="wasteChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Impact Overview</h3>
+                        <img src="https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/ddb49d5d2ce1c5183a77f801fbf10ce3/8cec15e3-84db-4e75-9d3d-78d5869835fb/74c174aa.png" alt="Chakr Dashboard Impact" class="dashboard-image">
+                    </div>
+                </div>
+
+                <div class="recent-activities">
+                    <h3>Recent Activities</h3>
+                    <div class="activity-list" id="activityList">
+                        <!-- Activities will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prediction Section -->
+        <section id="prediction" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Smart Portion & भविष्यवाणी System</h1>
+                    <p>ML-powered predictions for optimal food preparation</p>
+                </div>
+
+                <div class="prediction-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Today's Predictions</h3>
+                            <span class="status status--success">Active</span>
+                        </div>
+                        <div class="card__body">
+                            <div class="prediction-item">
+                                <span>Expected Students: <strong>427</strong></span>
+                                <span>Attendance Rate: <strong>87%</strong></span>
+                            </div>
+                            <div class="meal-predictions" id="mealPredictions">
+                                <!-- Meal predictions will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Portion Calculator</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="form-group">
+                                <label class="form-label">Select Dish:</label>
+                                <select id="dishSelect" class="form-control">
+                                    <option value="">Choose a dish...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Expected Students:</label>
+                                <input type="number" id="studentCount" class="form-control" value="427">
+                            </div>
+                            <button class="btn btn--primary" onclick="calculatePortions()">Calculate Portions</button>
+                            <div id="portionResults" class="portion-results"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prediction-chart">
+                    <h3>Historical Accuracy</h3>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="accuracyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feedback Section -->
+        <section id="feedback" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Digital Feedback Kiosk</h1>
+                    <p>Share your मत (opinion) on today's meals</p>
+                </div>
+
+                <div class="feedback-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Rate Today's Meal</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="meal-rating">
+                                <div class="rating-item">
+                                    <label>Overall Rating:</label>
+                                    <div class="star-rating" data-rating="0">
+                                        <span data-star="1">★</span>
+                                        <span data-star="2">★</span>
+                                        <span data-star="3">★</span>
+                                        <span data-star="4">★</span>
+                                        <span data-star="5">★</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="portion-feedback">
+                                    <label>Portion Size:</label>
+                                    <div class="portion-buttons">
+                                        <button class="portion-btn" data-portion="less">कम (Less)</button>
+                                        <button class="portion-btn" data-portion="right">सही (Just Right)</button>
+                                        <button class="portion-btn" data-portion="more">ज्यादा (Too Much)</button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Comments:</label>
+                                    <textarea id="feedbackComment" class="form-control" placeholder="Share your feedback..."></textarea>
+                                </div>
+
+                                <button class="btn btn--primary btn--full-width" onclick="submitFeedback()">Submit Feedback</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Real-time Analytics</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="feedback-stats" id="feedbackStats">
+                                <!-- Feedback statistics will be populated -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Donation Section -->
+        <section id="donation" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Food दान (Donation) Coordination</h1>
+                    <p>Connect surplus food with those in need</p>
+                </div>
+
+                <div class="donation-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Available Surplus</h3>
+                            <span class="status status--warning">45 kg Available</span>
+                        </div>
+                        <div class="card__body">
+                            <div class="surplus-items" id="surplusItems">
+                                <!-- Surplus items will be populated -->
+                            </div>
+                            <button class="btn btn--primary" onclick="schedulePickup()">Schedule Pickup</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>NGO Partners</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="ngo-list" id="ngoList">
+                                <!-- NGO list will be populated -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="donation-history">
+                    <h3>Recent Donations</h3>
+                    <div class="history-list" id="donationHistory">
+                        <!-- Donation history will be populated -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section id="leaderboard" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Gamification & शीर्ष सूची (Leaderboard)</h1>
+                    <p>Compete and earn rewards for reducing waste</p>
+                </div>
+
+                <div class="leaderboard-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Top Waste Warriors</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="leaderboard-list" id="leaderboardList">
+                                <!-- Leaderboard will be populated -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Your Profile</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="profile-stats">
+                                <div class="profile-avatar">👤</div>
+                                <h4>Arjun Sharma</h4>
+                                <div class="badge">🏆 Waste Warrior</div>
+                                <div class="stats-row">
+                                    <div class="stat">
+                                        <span class="stat-value">2450</span>
+                                        <span class="stat-label">Points</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value">12.3 kg</span>
+                                        <span class="stat-label">Waste Saved</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements">
+                    <h3>Available Achievements</h3>
+                    <div class="achievement-grid">
+                        <div class="achievement-item earned">
+                            <div class="achievement-icon">🏆</div>
+                            <h4>Waste Warrior</h4>
+                            <p>Save 10kg+ food waste</p>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🌱</div>
+                            <h4>Eco Champion</h4>
+                            <p>Complete 30 days streak</p>
+                        </div>
+                        <div class="achievement-item">
+                            <div class="achievement-icon">🎯</div>
+                            <h4>Perfect Predictor</h4>
+                            <p>95%+ prediction accuracy</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sustainability Section -->
+        <section id="sustainability" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Sustainability Dashboard</h1>
+                    <p>Track environmental impact and पर्यावरण benefits</p>
+                </div>
+
+                <div class="sustainability-stats">
+                    <div class="stat-card eco">
+                        <div class="stat-icon">♻️</div>
+                        <div class="stat-content">
+                            <h3 id="compostProduced">36 kg</h3>
+                            <p>Compost Produced Today</p>
+                        </div>
+                    </div>
+                    <div class="stat-card eco">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-content">
+                            <h3 id="biogasGenerated">8.7 m³</h3>
+                            <p>Biogas Generated</p>
+                        </div>
+                    </div>
+                    <div class="stat-card eco">
+                        <div class="stat-icon">🌱</div>
+                        <div class="stat-content">
+                            <h3 id="fertilizerProduced">26 kg</h3>
+                            <p>Organic Fertilizer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sustainability-charts">
+                    <div class="chart-container">
+                        <h3>CO₂ Savings Trend</h3>
+                        <div style="position: relative; height: 300px;">
+                            <canvas id="co2Chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Waste Processing Methods</h3>
+                        <div style="position: relative; height: 300px;">
+                            <canvas id="wasteProcessingChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="environmental-impact">
+                    <h3>Environmental Impact Calculator</h3>
+                    <div class="impact-calculator">
+                        <div class="form-group">
+                            <label class="form-label">Waste Reduced (kg):</label>
+                            <input type="number" id="wasteInput" class="form-control" value="47">
+                        </div>
+                        <button class="btn btn--primary" onclick="calculateImpact()">Calculate Impact</button>
+                        <div id="impactResults" class="impact-results"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RFID Section -->
+        <section id="rfid" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>RFID Integration Simulator</h1>
+                    <p>Simulate student check-in/check-out system</p>
+                </div>
+
+                <div class="rfid-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>RFID Scanner</h3>
+                            <span class="status status--success">Online</span>
+                        </div>
+                        <div class="card__body">
+                            <div class="rfid-scanner">
+                                <div class="scanner-animation" id="scannerAnimation">
+                                    <div class="scan-line"></div>
+                                    <span class="material-icons scanner-icon">nfc</span>
+                                </div>
+                                <p>Place your student ID card near the scanner</p>
+                                <button class="btn btn--primary" onclick="simulateRFID()">Simulate Card Tap</button>
+                            </div>
+                            <div class="scan-result" id="scanResult"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Live Attendance</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="attendance-stats">
+                                <div class="attendance-item">
+                                    <span>Current Meal:</span>
+                                    <strong>Dinner</strong>
+                                </div>
+                                <div class="attendance-item">
+                                    <span>Students Present:</span>
+                                    <strong id="presentCount">342</strong>
+                                </div>
+                                <div class="attendance-item">
+                                    <span>Expected:</span>
+                                    <strong>427</strong>
+                                </div>
+                            </div>
+                            <div class="attendance-chart">
+                                <div style="position: relative; height: 200px;">
+                                    <canvas id="attendanceChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-scans">
+                    <h3>Recent Check-ins</h3>
+                    <div class="scan-history" id="scanHistory">
+                        <!-- Scan history will be populated -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <div class="mobile-menu">
+            <button class="nav-item" onclick="showSection('dashboard'); toggleMobileMenu();">
+                <span class="material-icons">dashboard</span>
+                Dashboard
+            </button>
+            <button class="nav-item" onclick="showSection('prediction'); toggleMobileMenu();">
+                <span class="material-icons">analytics</span>
+                Prediction
+            </button>
+            <button class="nav-item" onclick="showSection('feedback'); toggleMobileMenu();">
+                <span class="material-icons">feedback</span>
+                Feedback
+            </button>
+            <button class="nav-item" onclick="showSection('donation'); toggleMobileMenu();">
+                <span class="material-icons">volunteer_activism</span>
+                Donation
+            </button>
+            <button class="nav-item" onclick="showSection('leaderboard'); toggleMobileMenu();">
+                <span class="material-icons">emoji_events</span>
+                Leaderboard
+            </button>
+            <button class="nav-item" onclick="showSection('sustainability'); toggleMobileMenu();">
+                <span class="material-icons">eco</span>
+                Sustainability
+            </button>
+            <button class="nav-item" onclick="showSection('rfid'); toggleMobileMenu();">
+                <span class="material-icons">nfc</span>
+                RFID
+            </button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
