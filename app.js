@@ -1,4 +1,4 @@
-// Chakr Application JavaScript - Fixed Version
+// Chakr Application JavaScript - Final Fixed Version with Proper Event Handling
 // Sample data from application_data_json
 const sampleData = {
   student_data: [
@@ -8,12 +8,17 @@ const sampleData = {
     {"id": "ST004", "name": "Anita Kumar", "hostel": "H3", "room": "301", "daily_attendance": 0.95, "preferred_portion": "medium", "dietary_pref": "jain"},
     {"id": "ST005", "name": "Vikash Yadav", "hostel": "H1", "room": "175", "daily_attendance": 0.67, "preferred_portion": "large", "dietary_pref": "non-vegetarian"}
   ],
-  ngo_partners: [
-    {"id": "NGO001", "name": "Akshaya Patra Foundation", "location": "Bangalore", "capacity": "2000+ meals/day", "specialization": "Child nutrition", "contact": "+91-9876543210"},
-    {"id": "NGO002", "name": "Robin Hood Army", "location": "Delhi", "capacity": "500+ meals/day", "specialization": "Community feeding", "contact": "+91-9876543211"},
-    {"id": "NGO003", "name": "Feeding India", "location": "Mumbai", "capacity": "1000+ meals/day", "specialization": "Food redistribution", "contact": "+91-9876543212"},
-    {"id": "NGO004", "name": "Aahar Foundation", "location": "Indore", "capacity": "300+ meals/day", "specialization": "Event food rescue", "contact": "+91-9876543213"},
-    {"id": "NGO005", "name": "No Food Waste", "location": "Coimbatore", "capacity": "400+ meals/day", "specialization": "Wedding surplus", "contact": "+91-9876543214"}
+  food_management_partners: [
+    {"id": "FMP001", "name": "Akshaya Patra Foundation", "location": "Bangalore", "capacity": "2000+ meals/day", "category": "Food Redistribution", "specialization": "Child nutrition", "contact": "+91-9876543210"},
+    {"id": "FMP002", "name": "Robin Hood Army", "location": "Delhi", "capacity": "500+ meals/day", "category": "Food Redistribution", "specialization": "Community feeding", "contact": "+91-9876543211"},
+    {"id": "FMP003", "name": "Feeding India", "location": "Mumbai", "capacity": "1000+ meals/day", "category": "Food Redistribution", "specialization": "Food redistribution", "contact": "+91-9876543212"},
+    {"id": "FMP004", "name": "Aahar Foundation", "location": "Indore", "capacity": "300+ meals/day", "category": "Food Redistribution", "specialization": "Event food rescue", "contact": "+91-9876543213"},
+    {"id": "FMP005", "name": "BioGen Industries", "location": "Pune", "capacity": "5 tonnes/day processing", "category": "Biogas Production", "specialization": "Organic waste to biogas", "contact": "+91-9876543214"},
+    {"id": "FMP006", "name": "Green Energy Solutions", "location": "Hyderabad", "capacity": "3 tonnes/day processing", "category": "Biogas Production", "specialization": "Food waste to renewable energy", "contact": "+91-9876543215"},
+    {"id": "FMP007", "name": "Animal Care Society", "location": "Chennai", "capacity": "200+ animals daily", "category": "Animal Feed", "specialization": "Animal shelter feeding", "contact": "+91-9876543216"},
+    {"id": "FMP008", "name": "Dairy Farm Cooperative", "location": "Amul, Gujarat", "capacity": "1 tonne/day cattle feed", "category": "Animal Feed", "specialization": "Cattle feed processing", "contact": "+91-9876543217"},
+    {"id": "FMP009", "name": "Organic Composting Unit", "location": "Mysore", "capacity": "2 tonnes/day composting", "category": "Composting", "specialization": "Food waste to fertilizer", "contact": "+91-9876543218"},
+    {"id": "FMP010", "name": "Agricultural Cooperative", "location": "Nashik", "capacity": "500 kg/day compost", "category": "Composting", "specialization": "Farmer compost distribution", "contact": "+91-9876543219"}
   ],
   waste_reduction_stats: {
     baseline_waste_kg: [120, 135, 98, 145, 110, 125, 140],
@@ -49,6 +54,7 @@ let currentSection = 'dashboard';
 let charts = {};
 let currentRating = 0;
 let currentPortion = '';
+let currentFilter = 'all';
 
 // Initialize application when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -63,7 +69,7 @@ function initializeApp() {
   initializeDashboard();
   initializePrediction();
   initializeFeedback();
-  initializeDonation();
+  initializeFoodManagement();
   initializeLeaderboard();
   initializeSustainability();
   initializeRFID();
@@ -73,6 +79,106 @@ function initializeApp() {
   
   // Show dashboard by default
   showSection('dashboard');
+}
+
+// Event Listeners Setup
+function setupEventListeners() {
+  console.log('Setting up event listeners...');
+  
+  // Navigation event listeners
+  const navItems = document.querySelectorAll('.nav-item[data-section]');
+  navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      const section = e.currentTarget.getAttribute('data-section');
+      showSection(section);
+    });
+  });
+  
+  // Mobile menu toggle
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+  }
+  
+  // Mobile menu overlay click to close
+  const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+  if (mobileMenuOverlay) {
+    mobileMenuOverlay.addEventListener('click', (e) => {
+      if (e.target === mobileMenuOverlay) {
+        toggleMobileMenu();
+      }
+    });
+  }
+  
+  // Filter buttons for food management
+  setupFilterButtons();
+  
+  // Form and interaction buttons
+  setupFormButtons();
+  
+  // Star rating and portion feedback setup - delayed for DOM elements
+  setTimeout(() => {
+    setupFeedbackInteractions();
+  }, 500);
+}
+
+function setupFilterButtons() {
+  // Food management filter buttons
+  setTimeout(() => {
+    const filterButtons = document.querySelectorAll('.filter-btn[data-category]');
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const category = e.currentTarget.getAttribute('data-category');
+        filterPartners(category);
+      });
+    });
+  }, 100);
+}
+
+function setupFormButtons() {
+  // Calculate portions button
+  const calculatePortionsBtn = document.getElementById('calculatePortionsBtn');
+  if (calculatePortionsBtn) {
+    calculatePortionsBtn.addEventListener('click', calculatePortions);
+  }
+  
+  // Submit feedback button
+  const submitFeedbackBtn = document.getElementById('submitFeedbackBtn');
+  if (submitFeedbackBtn) {
+    submitFeedbackBtn.addEventListener('click', submitFeedback);
+  }
+  
+  // Calculate impact button
+  const calculateImpactBtn = document.getElementById('calculateImpactBtn');
+  if (calculateImpactBtn) {
+    calculateImpactBtn.addEventListener('click', calculateImpact);
+  }
+  
+  // Simulate RFID button
+  const simulateRFIDBtn = document.getElementById('simulateRFIDBtn');
+  if (simulateRFIDBtn) {
+    simulateRFIDBtn.addEventListener('click', simulateRFID);
+  }
+}
+
+function setupFeedbackInteractions() {
+  // Star rating listeners
+  const starRating = document.querySelector('.star-rating');
+  if (starRating) {
+    const stars = starRating.querySelectorAll('span');
+    stars.forEach((star, index) => {
+      star.addEventListener('click', () => setRating(index + 1));
+      star.addEventListener('mouseenter', () => highlightStars(index + 1));
+    });
+    
+    starRating.addEventListener('mouseleave', () => highlightStars(currentRating));
+  }
+  
+  // Portion buttons listeners
+  const portionButtons = document.querySelectorAll('.portion-btn');
+  portionButtons.forEach(btn => {
+    btn.addEventListener('click', () => selectPortion(btn.dataset.portion));
+  });
 }
 
 // Navigation Functions
@@ -101,15 +207,15 @@ function showSection(sectionName) {
     item.classList.remove('active');
   });
   
-  // Find and activate the correct nav item
-  const activeNavItems = document.querySelectorAll(`[onclick*="'${sectionName}'"]`);
+  // Add active class to current nav items
+  const activeNavItems = document.querySelectorAll(`.nav-item[data-section="${sectionName}"]`);
   activeNavItems.forEach(item => {
     item.classList.add('active');
   });
   
   currentSection = sectionName;
   
-  // Initialize section-specific functionality
+  // Initialize section-specific functionality with delay for DOM updates
   setTimeout(() => {
     if (sectionName === 'dashboard') {
       updateDashboardCharts();
@@ -119,13 +225,20 @@ function showSection(sectionName) {
       updatePredictionCharts();
     } else if (sectionName === 'rfid') {
       updateAttendanceChart();
+    } else if (sectionName === 'food-management') {
+      // Ensure partners are filtered correctly when section loads
+      if (currentFilter) {
+        filterPartners(currentFilter);
+      }
     }
   }, 100);
 }
 
 function toggleMobileMenu() {
   const overlay = document.getElementById('mobileMenuOverlay');
-  overlay.classList.toggle('show');
+  if (overlay) {
+    overlay.classList.toggle('show');
+  }
 }
 
 // Dashboard Functions
@@ -141,19 +254,29 @@ function updateDashboardStats() {
   const todayReduction = sampleData.waste_reduction_stats.reduction_percentage[todayIndex];
   const todayCO2 = sampleData.sustainability_metrics.co2_savings_kg[todayIndex];
   
-  document.getElementById('todayWasteReduction').textContent = `${todayReduction}%`;
-  document.getElementById('co2Saved').textContent = `${todayCO2} kg`;
-  document.getElementById('mealsDonated').textContent = Math.floor(todayReduction * 2.5);
-  document.getElementById('activeStudents').textContent = sampleData.student_data.length * 85;
+  const elements = {
+    todayWasteReduction: `${todayReduction}%`,
+    co2Saved: `${todayCO2} kg`,
+    mealsManagedStat: Math.floor(todayReduction * 2.5).toString(),
+    activeStudents: (sampleData.student_data.length * 85).toString()
+  };
+  
+  Object.entries(elements).forEach(([id, value]) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.textContent = value;
+    }
+  });
 }
 
 function populateRecentActivities() {
   const activities = [
     {icon: '🍽️', text: 'Lunch prediction accuracy: 94%', time: '2 hours ago'},
     {icon: '🎯', text: 'Arjun Sharma earned "Waste Warrior" badge', time: '3 hours ago'},
-    {icon: '🚚', text: 'Donation pickup scheduled with Robin Hood Army', time: '4 hours ago'},
-    {icon: '♻️', text: '36kg waste converted to compost', time: '5 hours ago'},
-    {icon: '📊', text: 'Weekly report generated', time: '1 day ago'}
+    {icon: '🚚', text: 'Food pickup scheduled with BioGen Industries', time: '4 hours ago'},
+    {icon: '♻️', text: '36kg waste converted to compost by Agricultural Cooperative', time: '5 hours ago'},
+    {icon: '🐄', text: '15kg sent to Animal Care Society for animal feeding', time: '6 hours ago'},
+    {icon: '🔥', text: '8.7m³ biogas generated from food waste', time: '1 day ago'}
   ];
   
   const activityList = document.getElementById('activityList');
@@ -172,62 +295,91 @@ function populateRecentActivities() {
 
 function updateDashboardCharts() {
   console.log('Updating dashboard charts...');
+  
+  // Waste Chart
   const ctx = document.getElementById('wasteChart');
-  if (!ctx) {
-    console.error('Waste chart canvas not found');
-    return;
-  }
-  
-  if (charts.wasteChart) {
-    charts.wasteChart.destroy();
-  }
-  
-  charts.wasteChart = new Chart(ctx.getContext('2d'), {
-    type: 'bar',
-    data: {
-      labels: sampleData.waste_reduction_stats.days,
-      datasets: [
-        {
-          label: 'Before Chakr',
-          data: sampleData.waste_reduction_stats.baseline_waste_kg,
-          backgroundColor: '#FF6B6B',
-          borderColor: '#FF5252',
-          borderWidth: 1
-        },
-        {
-          label: 'After Chakr',
-          data: sampleData.waste_reduction_stats.after_chakr_waste_kg,
-          backgroundColor: '#1FB8CD',
-          borderColor: '#00BCD4',
-          borderWidth: 1
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'top',
-        }
+  if (ctx) {
+    if (charts.wasteChart) {
+      charts.wasteChart.destroy();
+    }
+    
+    charts.wasteChart = new Chart(ctx.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: sampleData.waste_reduction_stats.days,
+        datasets: [
+          {
+            label: 'Before Chakr',
+            data: sampleData.waste_reduction_stats.baseline_waste_kg,
+            backgroundColor: '#FF6B6B',
+            borderColor: '#FF5252',
+            borderWidth: 1
+          },
+          {
+            label: 'After Chakr',
+            data: sampleData.waste_reduction_stats.after_chakr_waste_kg,
+            backgroundColor: '#1FB8CD',
+            borderColor: '#00BCD4',
+            borderWidth: 1
+          }
+        ]
       },
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'Food Waste (kg)'
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
           }
         },
-        x: {
-          title: {
-            display: true,
-            text: 'Days of Week'
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Food Waste (kg)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Days of Week'
+            }
           }
         }
       }
+    });
+  }
+
+  // Management Overview Chart
+  const managementCtx = document.getElementById('managementOverviewChart');
+  if (managementCtx) {
+    if (charts.managementOverviewChart) {
+      charts.managementOverviewChart.destroy();
     }
-  });
+    
+    charts.managementOverviewChart = new Chart(managementCtx.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Food Redistribution', 'Biogas Production', 'Animal Feed', 'Composting'],
+        datasets: [{
+          data: [40, 25, 20, 15],
+          backgroundColor: ['#138808', '#FF9933', '#000080', '#8B4513'],
+          borderWidth: 2,
+          borderColor: '#fff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+  }
 }
 
 // Prediction System Functions
@@ -365,28 +517,6 @@ function initializeFeedback() {
   populateFeedbackStats();
 }
 
-function setupEventListeners() {
-  console.log('Setting up event listeners...');
-  
-  // Star rating listeners
-  const starRating = document.querySelector('.star-rating');
-  if (starRating) {
-    const stars = starRating.querySelectorAll('span');
-    stars.forEach((star, index) => {
-      star.addEventListener('click', () => setRating(index + 1));
-      star.addEventListener('mouseenter', () => highlightStars(index + 1));
-    });
-    
-    starRating.addEventListener('mouseleave', () => highlightStars(currentRating));
-  }
-  
-  // Portion buttons listeners
-  const portionButtons = document.querySelectorAll('.portion-btn');
-  portionButtons.forEach(btn => {
-    btn.addEventListener('click', () => selectPortion(btn.dataset.portion));
-  });
-}
-
 function setRating(rating) {
   currentRating = rating;
   highlightStars(rating);
@@ -412,7 +542,8 @@ function selectPortion(portion) {
 }
 
 function submitFeedback() {
-  const comment = document.getElementById('feedbackComment').value;
+  const comment = document.getElementById('feedbackComment');
+  const commentText = comment ? comment.value : '';
   
   if (currentRating === 0) {
     alert('कृपया रेटिंग दें (Please provide a rating)');
@@ -425,13 +556,13 @@ function submitFeedback() {
   }
   
   // Simulate feedback submission
-  alert(`धन्यवाद! Feedback submitted successfully!\nRating: ${currentRating} stars\nPortion: ${currentPortion}\nComment: ${comment || 'No comment'}`);
+  alert(`धन्यवाद! Feedback submitted successfully!\nRating: ${currentRating} stars\nPortion: ${currentPortion}\nComment: ${commentText || 'No comment'}`);
   
   // Reset form
   currentRating = 0;
   currentPortion = '';
-  if (document.getElementById('feedbackComment')) {
-    document.getElementById('feedbackComment').value = '';
+  if (comment) {
+    comment.value = '';
   }
   highlightStars(0);
   const buttons = document.querySelectorAll('.portion-btn');
@@ -460,12 +591,14 @@ function populateFeedbackStats() {
   }
 }
 
-// Donation System Functions
-function initializeDonation() {
-  console.log('Initializing donation system...');
+// Food Management System Functions
+function initializeFoodManagement() {
+  console.log('Initializing food management system...');
   populateSurplusItems();
-  populateNGOList();
-  populateDonationHistory();
+  populatePartnersGrid();
+  populateManagementHistory();
+  // Set default filter to 'all'
+  currentFilter = 'all';
 }
 
 function populateSurplusItems() {
@@ -489,43 +622,159 @@ function populateSurplusItems() {
   }
 }
 
-function populateNGOList() {
-  const container = document.getElementById('ngoList');
-  if (container) {
-    container.innerHTML = sampleData.ngo_partners.map(ngo => `
-      <div class="ngo-item">
-        <div class="ngo-name">${ngo.name}</div>
-        <div class="ngo-location">📍 ${ngo.location}</div>
-        <div class="ngo-capacity">${ngo.capacity}</div>
-        <small>${ngo.specialization}</small>
-      </div>
-    `).join('');
-  }
+function getPartnerIcon(category) {
+  const icons = {
+    'Food Redistribution': '🍽️',
+    'Biogas Production': '🔥',
+    'Animal Feed': '🐄',
+    'Composting': '🌱'
+  };
+  return icons[category] || '🏢';
 }
 
-function populateDonationHistory() {
+function getCategoryClass(category) {
+  const classes = {
+    'Food Redistribution': 'food-redistribution',
+    'Biogas Production': 'biogas-production', 
+    'Animal Feed': 'animal-feed',
+    'Composting': 'composting'
+  };
+  return classes[category] || 'food-redistribution';
+}
+
+function populatePartnersGrid() {
+  const container = document.getElementById('partnersGrid');
+  if (!container) return;
+  
+  container.innerHTML = sampleData.food_management_partners.map(partner => {
+    const escapedName = partner.name.replace(/'/g, "\\'");
+    const escapedCategory = partner.category.replace(/'/g, "\\'");
+    const escapedContact = partner.contact.replace(/'/g, "\\'");
+    
+    return `
+      <div class="partner-card" data-category="${partner.category}">
+        <div class="partner-header">
+          <div class="partner-icon ${getCategoryClass(partner.category)}">
+            ${getPartnerIcon(partner.category)}
+          </div>
+          <div class="partner-info">
+            <h4>${partner.name}</h4>
+            <div class="partner-location">📍 ${partner.location}</div>
+            <span class="partner-category">${partner.category}</span>
+          </div>
+        </div>
+        <div class="partner-details">
+          <div class="partner-detail">
+            <span class="partner-detail-label">Capacity:</span>
+            <span class="partner-detail-value">${partner.capacity}</span>
+          </div>
+          <div class="partner-detail">
+            <span class="partner-detail-label">Specialization:</span>
+            <span class="partner-detail-value">${partner.specialization}</span>
+          </div>
+          <div class="partner-detail">
+            <span class="partner-detail-label">Contact:</span>
+            <span class="partner-detail-value">${partner.contact}</span>
+          </div>
+        </div>
+        <div class="partner-actions">
+          <button class="btn-schedule" data-partner="${escapedName}" data-category="${escapedCategory}">
+            Schedule Pickup
+          </button>
+          <button class="btn-contact" data-contact="${escapedContact}">
+            Contact
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  // Add event listeners for partner action buttons
+  setupPartnerActionButtons();
+}
+
+function setupPartnerActionButtons() {
+  // Schedule pickup buttons
+  const scheduleButtons = document.querySelectorAll('.btn-schedule');
+  scheduleButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const partnerName = e.currentTarget.getAttribute('data-partner');
+      const category = e.currentTarget.getAttribute('data-category');
+      schedulePickup(partnerName, category);
+    });
+  });
+  
+  // Contact buttons
+  const contactButtons = document.querySelectorAll('.btn-contact');
+  contactButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const contact = e.currentTarget.getAttribute('data-contact');
+      contactPartner(contact);
+    });
+  });
+}
+
+function filterPartners(category) {
+  console.log(`Filtering partners by category: ${category}`);
+  currentFilter = category;
+  
+  // Update filter button states
+  const filterButtons = document.querySelectorAll('.filter-btn[data-category]');
+  filterButtons.forEach(btn => {
+    if (btn.getAttribute('data-category') === category) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+  
+  // Show/hide partner cards
+  const partnerCards = document.querySelectorAll('.partner-card');
+  partnerCards.forEach(card => {
+    if (category === 'all' || card.getAttribute('data-category') === category) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+
+function schedulePickup(partnerName, category) {
+  const messages = {
+    'Food Redistribution': `📞 Food redistribution pickup scheduled with ${partnerName}! They will collect surplus food in 30 minutes for community distribution.`,
+    'Biogas Production': `🔥 Biogas processing pickup scheduled with ${partnerName}! They will collect organic waste in 45 minutes for energy generation.`,
+    'Animal Feed': `🐄 Animal feed pickup scheduled with ${partnerName}! They will collect suitable food waste in 1 hour for animal nutrition.`,
+    'Composting': `🌱 Composting pickup scheduled with ${partnerName}! They will collect organic waste in 2 hours for fertilizer production.`
+  };
+  
+  alert(messages[category] || `Pickup scheduled with ${partnerName}!`);
+}
+
+function contactPartner(contact) {
+  alert(`📱 Contact Information:\n${contact}\n\nThis would typically open your phone dialer or messaging app.`);
+}
+
+function populateManagementHistory() {
   const history = [
-    {ngo: 'Akshaya Patra Foundation', amount: '25 kg', date: 'Today 2:30 PM', status: 'Delivered'},
-    {ngo: 'Robin Hood Army', amount: '18 kg', date: 'Yesterday 6:45 PM', status: 'Delivered'},
-    {ngo: 'Feeding India', amount: '32 kg', date: '2 days ago', status: 'Delivered'}
+    {partner: 'Akshaya Patra Foundation', amount: '25 kg food distributed', date: 'Today 2:30 PM', category: 'Food Redistribution'},
+    {partner: 'BioGen Industries', amount: '18 kg processed to biogas', date: 'Yesterday 6:45 PM', category: 'Biogas Production'},
+    {partner: 'Animal Care Society', amount: '12 kg used as animal feed', date: '2 days ago', category: 'Animal Feed'},
+    {partner: 'Organic Composting Unit', amount: '30 kg composted to fertilizer', date: '2 days ago', category: 'Composting'},
+    {partner: 'Feeding India', amount: '22 kg food redistributed', date: '3 days ago', category: 'Food Redistribution'}
   ];
   
-  const container = document.getElementById('donationHistory');
+  const container = document.getElementById('managementHistory');
   if (container) {
-    container.innerHTML = history.map(donation => `
+    container.innerHTML = history.map(item => `
       <div class="history-item">
         <div>
-          <strong>${donation.ngo}</strong><br>
-          <small>${donation.amount} - ${donation.date}</small>
+          <div class="history-partner">${item.partner}</div>
+          <div class="history-details">${item.amount} - ${item.date}</div>
         </div>
-        <span class="status status--success">${donation.status}</span>
+        <span class="history-status">Completed</span>
       </div>
     `).join('');
   }
-}
-
-function schedulePickup() {
-  alert('📞 Pickup scheduled! Robin Hood Army will collect surplus food in 30 minutes.\nContact: +91-9876543211');
 }
 
 // Leaderboard Functions
@@ -558,13 +807,18 @@ function initializeSustainability() {
 
 function updateSustainabilityStats() {
   const todayIndex = 5; // Saturday
-  const compostEl = document.getElementById('compostProduced');
-  const biogasEl = document.getElementById('biogasGenerated');
-  const fertilizerEl = document.getElementById('fertilizerProduced');
+  const elements = {
+    compostProduced: `${sampleData.sustainability_metrics.composted_waste_kg[todayIndex]} kg`,
+    biogasGenerated: `${sampleData.sustainability_metrics.biogas_generated_cubic_meters[todayIndex]} m³`,
+    fertilizerProduced: `${sampleData.sustainability_metrics.fertilizer_produced_kg[todayIndex]} kg`
+  };
   
-  if (compostEl) compostEl.textContent = `${sampleData.sustainability_metrics.composted_waste_kg[todayIndex]} kg`;
-  if (biogasEl) biogasEl.textContent = `${sampleData.sustainability_metrics.biogas_generated_cubic_meters[todayIndex]} m³`;
-  if (fertilizerEl) fertilizerEl.textContent = `${sampleData.sustainability_metrics.fertilizer_produced_kg[todayIndex]} kg`;
+  Object.entries(elements).forEach(([id, value]) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.textContent = value;
+    }
+  });
 }
 
 function updateSustainabilityCharts() {
@@ -622,10 +876,10 @@ function updateSustainabilityCharts() {
     charts.processingChart = new Chart(processingCtx.getContext('2d'), {
       type: 'doughnut',
       data: {
-        labels: ['Composting', 'Biogas', 'Animal Feed', 'Donation'],
+        labels: ['Food Redistribution', 'Biogas Production', 'Animal Feed', 'Composting'],
         datasets: [{
-          data: [45, 25, 15, 15],
-          backgroundColor: ['#1FB8CD', '#FFC185', '#B4413C', '#5D878F'],
+          data: [40, 25, 20, 15],
+          backgroundColor: ['#138808', '#FF9933', '#000080', '#8B4513'],
           borderWidth: 2,
           borderColor: '#fff'
         }]
@@ -843,12 +1097,3 @@ function updateAttendanceChart() {
     }
   });
 }
-
-// Make functions globally available for HTML onclick events
-window.showSection = showSection;
-window.toggleMobileMenu = toggleMobileMenu;
-window.calculatePortions = calculatePortions;
-window.submitFeedback = submitFeedback;
-window.schedulePickup = schedulePickup;
-window.calculateImpact = calculateImpact;
-window.simulateRFID = simulateRFID;
