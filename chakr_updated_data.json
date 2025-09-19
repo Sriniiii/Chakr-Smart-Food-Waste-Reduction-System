@@ -1,0 +1,316 @@
+{
+  "student_data": [
+    {
+      "id": "ST001",
+      "name": "Arjun Sharma",
+      "hostel": "H1",
+      "room": "101",
+      "daily_attendance": 0.85,
+      "preferred_portion": "medium",
+      "dietary_pref": "vegetarian"
+    },
+    {
+      "id": "ST002",
+      "name": "Priya Singh",
+      "hostel": "H2",
+      "room": "205",
+      "daily_attendance": 0.92,
+      "preferred_portion": "small",
+      "dietary_pref": "vegetarian"
+    },
+    {
+      "id": "ST003",
+      "name": "Rahul Patel",
+      "hostel": "H1",
+      "room": "150",
+      "daily_attendance": 0.78,
+      "preferred_portion": "large",
+      "dietary_pref": "non-vegetarian"
+    },
+    {
+      "id": "ST004",
+      "name": "Anita Kumar",
+      "hostel": "H3",
+      "room": "301",
+      "daily_attendance": 0.95,
+      "preferred_portion": "medium",
+      "dietary_pref": "jain"
+    },
+    {
+      "id": "ST005",
+      "name": "Vikash Yadav",
+      "hostel": "H1",
+      "room": "175",
+      "daily_attendance": 0.67,
+      "preferred_portion": "large",
+      "dietary_pref": "non-vegetarian"
+    }
+  ],
+  "food_management_partners": [
+    {
+      "id": "FMP001",
+      "name": "Akshaya Patra Foundation",
+      "location": "Bangalore",
+      "capacity": "2000+ meals/day",
+      "category": "Food Redistribution",
+      "specialization": "Child nutrition",
+      "contact": "+91-9876543210"
+    },
+    {
+      "id": "FMP002",
+      "name": "Robin Hood Army",
+      "location": "Delhi",
+      "capacity": "500+ meals/day",
+      "category": "Food Redistribution",
+      "specialization": "Community feeding",
+      "contact": "+91-9876543211"
+    },
+    {
+      "id": "FMP003",
+      "name": "Feeding India",
+      "location": "Mumbai",
+      "capacity": "1000+ meals/day",
+      "category": "Food Redistribution",
+      "specialization": "Food redistribution",
+      "contact": "+91-9876543212"
+    },
+    {
+      "id": "FMP004",
+      "name": "Aahar Foundation",
+      "location": "Indore",
+      "capacity": "300+ meals/day",
+      "category": "Food Redistribution",
+      "specialization": "Event food rescue",
+      "contact": "+91-9876543213"
+    },
+    {
+      "id": "FMP005",
+      "name": "BioGen Industries",
+      "location": "Pune",
+      "capacity": "5 tonnes/day processing",
+      "category": "Biogas Production",
+      "specialization": "Organic waste to biogas",
+      "contact": "+91-9876543214"
+    },
+    {
+      "id": "FMP006",
+      "name": "Green Energy Solutions",
+      "location": "Hyderabad",
+      "capacity": "3 tonnes/day processing",
+      "category": "Biogas Production",
+      "specialization": "Food waste to renewable energy",
+      "contact": "+91-9876543215"
+    },
+    {
+      "id": "FMP007",
+      "name": "Animal Care Society",
+      "location": "Chennai",
+      "capacity": "200+ animals daily",
+      "category": "Animal Feed",
+      "specialization": "Animal shelter feeding",
+      "contact": "+91-9876543216"
+    },
+    {
+      "id": "FMP008",
+      "name": "Dairy Farm Cooperative",
+      "location": "Amul, Gujarat",
+      "capacity": "1 tonne/day cattle feed",
+      "category": "Animal Feed",
+      "specialization": "Cattle feed processing",
+      "contact": "+91-9876543217"
+    },
+    {
+      "id": "FMP009",
+      "name": "Organic Composting Unit",
+      "location": "Mysore",
+      "capacity": "2 tonnes/day composting",
+      "category": "Composting",
+      "specialization": "Food waste to fertilizer",
+      "contact": "+91-9876543218"
+    },
+    {
+      "id": "FMP010",
+      "name": "Agricultural Cooperative",
+      "location": "Nashik",
+      "capacity": "500 kg/day compost",
+      "category": "Composting",
+      "specialization": "Farmer compost distribution",
+      "contact": "+91-9876543219"
+    }
+  ],
+  "waste_reduction_stats": {
+    "baseline_waste_kg": [
+      120,
+      135,
+      98,
+      145,
+      110,
+      125,
+      140
+    ],
+    "after_chakr_waste_kg": [
+      45,
+      52,
+      38,
+      48,
+      42,
+      47,
+      53
+    ],
+    "days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "reduction_percentage": [
+      62.5,
+      61.5,
+      61.2,
+      66.9,
+      61.8,
+      62.4,
+      62.1
+    ]
+  },
+  "menu_data": [
+    {
+      "meal": "Breakfast",
+      "item": "Poha",
+      "veg": true,
+      "estimated_portions": {
+        "small": 150,
+        "medium": 200,
+        "large": 250
+      }
+    },
+    {
+      "meal": "Breakfast",
+      "item": "Sambar",
+      "veg": true,
+      "estimated_portions": {
+        "small": 100,
+        "medium": 140,
+        "large": 180
+      }
+    },
+    {
+      "meal": "Lunch",
+      "item": "Dal Tadka",
+      "veg": true,
+      "estimated_portions": {
+        "small": 180,
+        "medium": 250,
+        "large": 320
+      }
+    },
+    {
+      "meal": "Lunch",
+      "item": "Chicken Curry",
+      "veg": false,
+      "estimated_portions": {
+        "small": 80,
+        "medium": 120,
+        "large": 160
+      }
+    },
+    {
+      "meal": "Dinner",
+      "item": "Rajma",
+      "veg": true,
+      "estimated_portions": {
+        "small": 170,
+        "medium": 230,
+        "large": 290
+      }
+    },
+    {
+      "meal": "Dinner",
+      "item": "Roti",
+      "veg": true,
+      "estimated_portions": {
+        "small": 250,
+        "medium": 350,
+        "large": 450
+      }
+    }
+  ],
+  "leaderboard": [
+    {
+      "rank": 1,
+      "name": "Arjun Sharma",
+      "points": 2450,
+      "waste_saved_kg": 12.3,
+      "badge": "Waste Warrior"
+    },
+    {
+      "rank": 2,
+      "name": "Priya Singh",
+      "points": 2380,
+      "waste_saved_kg": 11.9,
+      "badge": "Eco Champion"
+    },
+    {
+      "rank": 3,
+      "name": "Anita Kumar",
+      "points": 2210,
+      "waste_saved_kg": 11.1,
+      "badge": "Green Guardian"
+    },
+    {
+      "rank": 4,
+      "name": "Vikash Yadav",
+      "points": 2050,
+      "waste_saved_kg": 10.3,
+      "badge": "Planet Protector"
+    },
+    {
+      "rank": 5,
+      "name": "Rahul Patel",
+      "points": 1890,
+      "waste_saved_kg": 9.5,
+      "badge": "Earth Saver"
+    }
+  ],
+  "sustainability_metrics": {
+    "composted_waste_kg": [
+      35,
+      42,
+      28,
+      38,
+      32,
+      36,
+      41
+    ],
+    "biogas_generated_cubic_meters": [
+      8.5,
+      10.2,
+      6.8,
+      9.2,
+      7.8,
+      8.7,
+      9.9
+    ],
+    "co2_savings_kg": [
+      78,
+      94,
+      62,
+      85,
+      72,
+      81,
+      92
+    ],
+    "fertilizer_produced_kg": [
+      25,
+      30,
+      20,
+      27,
+      23,
+      26,
+      29
+    ]
+  }
+}

@@ -20,36 +20,36 @@
                 <span class="nav-subtitle">Chakr - Smart Food Waste Reduction</span>
             </div>
             <nav class="nav-menu">
-                <button class="nav-item active" onclick="showSection('dashboard')">
+                <button class="nav-item active" data-section="dashboard">
                     <span class="material-icons">dashboard</span>
                     Dashboard
                 </button>
-                <button class="nav-item" onclick="showSection('prediction')">
+                <button class="nav-item" data-section="prediction">
                     <span class="material-icons">analytics</span>
                     Prediction
                 </button>
-                <button class="nav-item" onclick="showSection('feedback')">
+                <button class="nav-item" data-section="feedback">
                     <span class="material-icons">feedback</span>
                     Feedback
                 </button>
-                <button class="nav-item" onclick="showSection('donation')">
-                    <span class="material-icons">volunteer_activism</span>
-                    Donation
+                <button class="nav-item" data-section="food-management">
+                    <span class="material-icons">recycling</span>
+                    Food Management
                 </button>
-                <button class="nav-item" onclick="showSection('leaderboard')">
+                <button class="nav-item" data-section="leaderboard">
                     <span class="material-icons">emoji_events</span>
                     Leaderboard
                 </button>
-                <button class="nav-item" onclick="showSection('sustainability')">
+                <button class="nav-item" data-section="sustainability">
                     <span class="material-icons">eco</span>
                     Sustainability
                 </button>
-                <button class="nav-item" onclick="showSection('rfid')">
+                <button class="nav-item" data-section="rfid">
                     <span class="material-icons">nfc</span>
                     RFID
                 </button>
             </nav>
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
                 <span class="material-icons">menu</span>
             </button>
         </div>
@@ -88,8 +88,8 @@
                             <span class="material-icons">restaurant</span>
                         </div>
                         <div class="stat-content">
-                            <h3 id="mealsDonated">156</h3>
-                            <p>भोजन Donated</p>
+                            <h3 id="mealsManagedStat">156</h3>
+                            <p>भोजन Managed</p>
                         </div>
                     </div>
                     <div class="stat-card info">
@@ -111,8 +111,10 @@
                         </div>
                     </div>
                     <div class="chart-container">
-                        <h3>Impact Overview</h3>
-                        <img src="https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/ddb49d5d2ce1c5183a77f801fbf10ce3/8cec15e3-84db-4e75-9d3d-78d5869835fb/74c174aa.png" alt="Chakr Dashboard Impact" class="dashboard-image">
+                        <h3>Food Management Overview</h3>
+                        <div style="position: relative; height: 300px;">
+                            <canvas id="managementOverviewChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
@@ -165,7 +167,7 @@
                                 <label class="form-label">Expected Students:</label>
                                 <input type="number" id="studentCount" class="form-control" value="427">
                             </div>
-                            <button class="btn btn--primary" onclick="calculatePortions()">Calculate Portions</button>
+                            <button class="btn btn--primary" id="calculatePortionsBtn">Calculate Portions</button>
                             <div id="portionResults" class="portion-results"></div>
                         </div>
                     </div>
@@ -220,7 +222,7 @@
                                     <textarea id="feedbackComment" class="form-control" placeholder="Share your feedback..."></textarea>
                                 </div>
 
-                                <button class="btn btn--primary btn--full-width" onclick="submitFeedback()">Submit Feedback</button>
+                                <button class="btn btn--primary btn--full-width" id="submitFeedbackBtn">Submit Feedback</button>
                             </div>
                         </div>
                     </div>
@@ -239,44 +241,66 @@
             </div>
         </section>
 
-        <!-- Donation Section -->
-        <section id="donation" class="section">
+        <!-- Food Management Section -->
+        <section id="food-management" class="section">
             <div class="container">
                 <div class="section-header">
-                    <h1>Food दान (Donation) Coordination</h1>
-                    <p>Connect surplus food with those in need</p>
+                    <h1>Food Management Partners</h1>
+                    <p>Comprehensive food waste management across multiple streams</p>
                 </div>
 
-                <div class="donation-grid">
-                    <div class="card">
-                        <div class="card__header">
-                            <h3>Available Surplus</h3>
-                            <span class="status status--warning">45 kg Available</span>
-                        </div>
-                        <div class="card__body">
-                            <div class="surplus-items" id="surplusItems">
-                                <!-- Surplus items will be populated -->
+                <div class="management-controls">
+                    <div class="surplus-status">
+                        <div class="card">
+                            <div class="card__header">
+                                <h3>Available Surplus</h3>
+                                <span class="status status--warning">45 kg Available</span>
                             </div>
-                            <button class="btn btn--primary" onclick="schedulePickup()">Schedule Pickup</button>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card__header">
-                            <h3>NGO Partners</h3>
-                        </div>
-                        <div class="card__body">
-                            <div class="ngo-list" id="ngoList">
-                                <!-- NGO list will be populated -->
+                            <div class="card__body">
+                                <div class="surplus-items" id="surplusItems">
+                                    <!-- Surplus items will be populated -->
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="category-filters">
+                        <h3>Filter by Category</h3>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-category="all">
+                                <span class="material-icons">select_all</span>
+                                All Partners
+                            </button>
+                            <button class="filter-btn" data-category="Food Redistribution">
+                                <span class="material-icons">restaurant</span>
+                                Food Redistribution
+                            </button>
+                            <button class="filter-btn" data-category="Biogas Production">
+                                <span class="material-icons">local_fire_department</span>
+                                Biogas Production
+                            </button>
+                            <button class="filter-btn" data-category="Animal Feed">
+                                <span class="material-icons">pets</span>
+                                Animal Feed
+                            </button>
+                            <button class="filter-btn" data-category="Composting">
+                                <span class="material-icons">compost</span>
+                                Composting
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="donation-history">
-                    <h3>Recent Donations</h3>
-                    <div class="history-list" id="donationHistory">
-                        <!-- Donation history will be populated -->
+                <div class="partners-section">
+                    <div class="partners-grid" id="partnersGrid">
+                        <!-- Partners will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="management-history">
+                    <h3>Recent Food Management Activities</h3>
+                    <div class="history-list" id="managementHistory">
+                        <!-- Management history will be populated -->
                     </div>
                 </div>
             </div>
@@ -403,7 +427,7 @@
                             <label class="form-label">Waste Reduced (kg):</label>
                             <input type="number" id="wasteInput" class="form-control" value="47">
                         </div>
-                        <button class="btn btn--primary" onclick="calculateImpact()">Calculate Impact</button>
+                        <button class="btn btn--primary" id="calculateImpactBtn">Calculate Impact</button>
                         <div id="impactResults" class="impact-results"></div>
                     </div>
                 </div>
@@ -431,7 +455,7 @@
                                     <span class="material-icons scanner-icon">nfc</span>
                                 </div>
                                 <p>Place your student ID card near the scanner</p>
-                                <button class="btn btn--primary" onclick="simulateRFID()">Simulate Card Tap</button>
+                                <button class="btn btn--primary" id="simulateRFIDBtn">Simulate Card Tap</button>
                             </div>
                             <div class="scan-result" id="scanResult"></div>
                         </div>
@@ -478,31 +502,31 @@
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay">
         <div class="mobile-menu">
-            <button class="nav-item" onclick="showSection('dashboard'); toggleMobileMenu();">
+            <button class="nav-item" data-section="dashboard">
                 <span class="material-icons">dashboard</span>
                 Dashboard
             </button>
-            <button class="nav-item" onclick="showSection('prediction'); toggleMobileMenu();">
+            <button class="nav-item" data-section="prediction">
                 <span class="material-icons">analytics</span>
                 Prediction
             </button>
-            <button class="nav-item" onclick="showSection('feedback'); toggleMobileMenu();">
+            <button class="nav-item" data-section="feedback">
                 <span class="material-icons">feedback</span>
                 Feedback
             </button>
-            <button class="nav-item" onclick="showSection('donation'); toggleMobileMenu();">
-                <span class="material-icons">volunteer_activism</span>
-                Donation
+            <button class="nav-item" data-section="food-management">
+                <span class="material-icons">recycling</span>
+                Food Management
             </button>
-            <button class="nav-item" onclick="showSection('leaderboard'); toggleMobileMenu();">
+            <button class="nav-item" data-section="leaderboard">
                 <span class="material-icons">emoji_events</span>
                 Leaderboard
             </button>
-            <button class="nav-item" onclick="showSection('sustainability'); toggleMobileMenu();">
+            <button class="nav-item" data-section="sustainability">
                 <span class="material-icons">eco</span>
                 Sustainability
             </button>
-            <button class="nav-item" onclick="showSection('rfid'); toggleMobileMenu();">
+            <button class="nav-item" data-section="rfid">
                 <span class="material-icons">nfc</span>
                 RFID
             </button>

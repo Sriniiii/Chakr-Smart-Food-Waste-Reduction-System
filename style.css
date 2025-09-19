@@ -1142,64 +1142,239 @@ body {
   border-radius: var(--radius-base);
 }
 
-/* Donation Section */
-.donation-grid {
+/* Food Management Section */
+.management-controls {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: 1fr 2fr;
   gap: var(--space-24);
   margin-bottom: var(--space-32);
 }
 
+.surplus-status .card {
+  height: 100%;
+}
+
 .surplus-items {
-  margin-bottom: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
 }
 
 .surplus-item {
   display: flex;
   justify-content: space-between;
   padding: var(--space-12);
-  margin-bottom: var(--space-8);
   background: var(--color-bg-6);
   border-radius: var(--radius-base);
   border-left: 3px solid var(--indian-green);
 }
 
-.ngo-list {
-  display: flex;
-  flex-direction: column;
+.category-filters h3 {
+  color: var(--color-text);
+  margin-bottom: var(--space-16);
+}
+
+.filter-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: var(--space-12);
 }
 
-.ngo-item {
-  padding: var(--space-16);
-  background: var(--color-bg-7);
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-12) var(--space-16);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
   border-radius: var(--radius-base);
-  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
 }
 
-.ngo-name {
-  font-weight: var(--font-weight-medium);
+.filter-btn:hover {
+  border-color: var(--indian-saffron);
+  background: rgba(255, 153, 51, 0.1);
+}
+
+.filter-btn.active {
+  background: var(--indian-saffron);
+  color: var(--indian-white);
+  border-color: var(--indian-saffron);
+}
+
+.partners-section {
+  margin-bottom: var(--space-32);
+}
+
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--space-20);
+}
+
+.partner-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-20);
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid transparent;
+  transition: all var(--duration-normal) var(--ease-standard);
+  position: relative;
+}
+
+.partner-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.partner-card[data-category="Food Redistribution"] {
+  border-left-color: var(--indian-green);
+}
+
+.partner-card[data-category="Biogas Production"] {
+  border-left-color: var(--indian-saffron);
+}
+
+.partner-card[data-category="Animal Feed"] {
+  border-left-color: var(--indian-navy);
+}
+
+.partner-card[data-category="Composting"] {
+  border-left-color: #8B4513;
+}
+
+.partner-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-16);
+  margin-bottom: var(--space-16);
+}
+
+.partner-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: var(--indian-white);
+  flex-shrink: 0;
+}
+
+.partner-icon.food-redistribution {
+  background: var(--indian-green);
+}
+
+.partner-icon.biogas-production {
+  background: var(--indian-saffron);
+}
+
+.partner-icon.animal-feed {
+  background: var(--indian-navy);
+}
+
+.partner-icon.composting {
+  background: #8B4513;
+}
+
+.partner-info h4 {
   color: var(--color-text);
   margin-bottom: var(--space-4);
+  font-size: var(--font-size-lg);
 }
 
-.ngo-location {
+.partner-location {
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
   margin-bottom: var(--space-8);
 }
 
-.ngo-capacity {
-  font-size: var(--font-size-sm);
-  color: var(--indian-green);
+.partner-category {
+  display: inline-block;
+  padding: var(--space-4) var(--space-8);
+  background: var(--color-bg-1);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
   font-weight: var(--font-weight-medium);
 }
 
-.donation-history {
+.partner-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  margin-bottom: var(--space-16);
+}
+
+.partner-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-sm);
+}
+
+.partner-detail-label {
+  color: var(--color-text-secondary);
+}
+
+.partner-detail-value {
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.partner-actions {
+  display: flex;
+  gap: var(--space-8);
+}
+
+.btn-schedule {
+  flex: 1;
+  padding: var(--space-8) var(--space-12);
+  background: var(--indian-saffron);
+  color: var(--indian-white);
+  border: none;
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background var(--duration-normal);
+}
+
+.btn-schedule:hover {
+  background: #e8940f;
+}
+
+.btn-contact {
+  padding: var(--space-8) var(--space-12);
+  background: transparent;
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--duration-normal);
+}
+
+.btn-contact:hover {
+  border-color: var(--indian-saffron);
+  background: rgba(255, 153, 51, 0.1);
+}
+
+.management-history {
   background: var(--color-surface);
   border-radius: var(--radius-lg);
   padding: var(--space-24);
   box-shadow: var(--shadow-sm);
+}
+
+.management-history h3 {
+  color: var(--color-text);
+  margin-bottom: var(--space-16);
 }
 
 .history-list {
@@ -1215,6 +1390,25 @@ body {
   padding: var(--space-12);
   background: var(--color-bg-8);
   border-radius: var(--radius-base);
+}
+
+.history-partner {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.history-details {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.history-status {
+  font-size: var(--font-size-xs);
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-sm);
+  background: rgba(var(--color-success-rgb), 0.2);
+  color: var(--color-success);
+  font-weight: var(--font-weight-medium);
 }
 
 /* Leaderboard Section */
@@ -1553,6 +1747,11 @@ body {
   background: var(--color-secondary-hover);
 }
 
+/* Hidden class for filtering */
+.hidden {
+  display: none !important;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .nav-menu {
@@ -1574,10 +1773,21 @@ body {
   
   .prediction-grid,
   .feedback-grid,
-  .donation-grid,
   .leaderboard-grid,
   .sustainability-charts,
   .rfid-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .management-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .partners-grid {
     grid-template-columns: 1fr;
   }
   
@@ -1600,6 +1810,10 @@ body {
   .stats-row {
     flex-direction: column;
     gap: var(--space-16);
+  }
+
+  .partner-actions {
+    flex-direction: column;
   }
 }
 
@@ -1624,6 +1838,15 @@ body {
   
   .chart-container {
     padding: var(--space-16);
+  }
+
+  .partners-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-header {
+    flex-direction: column;
+    text-align: center;
   }
 }
 
