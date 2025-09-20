@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -33,28 +38,28 @@
                         <div class="role-icon provider-icon">🍽️</div>
                         <h3>Provider</h3>
                         <p>Donate excess food from your kitchen, mess, or restaurant</p>
-                        <div class="role-stats">150+ donations made</div>
+                        <div class="role-stats">185 donations made</div>
                     </div>
                     
                     <div class="role-card" data-role="consumer" onclick="selectRole('consumer')">
                         <div class="role-icon consumer-icon">❤️</div>
                         <h3>Consumer</h3>
                         <p>Find and request food donations for your NGO or community</p>
-                        <div class="role-stats">89 requests fulfilled</div>
+                        <div class="role-stats">124 requests fulfilled</div>
                     </div>
                     
                     <div class="role-card" data-role="volunteer" onclick="selectRole('volunteer')">
                         <div class="role-icon volunteer-icon">🎓</div>
                         <h3>Volunteer</h3>
                         <p>Help coordinate pickups and deliveries in your area</p>
-                        <div class="role-stats">45 hours logged</div>
+                        <div class="role-stats">68 hours logged</div>
                     </div>
                     
                     <div class="role-card" data-role="admin" onclick="selectRole('admin')">
                         <div class="role-icon admin-icon">🛠️</div>
                         <h3>Admin</h3>
                         <p>Manage the platform and monitor system-wide activities</p>
-                        <div class="role-stats">1247 meals saved</div>
+                        <div class="role-stats">2847 meals saved</div>
                     </div>
                 </div>
             </div>
@@ -82,7 +87,7 @@
             </div>
             <div class="nav-right">
                 <div class="impact-counter">
-                    <span class="counter-value" data-counter="150">150</span>
+                    <span class="counter-value" data-counter="185">185</span>
                     <span class="counter-label">meals donated</span>
                 </div>
                 <button class="profile-btn">
@@ -92,120 +97,25 @@
         </nav>
 
         <div class="main-content">
-            <div class="provider-dashboard">
-                <!-- Upload Food Section -->
-                <section class="upload-section glass-card">
-                    <h2>🍽️ Upload Food Donation</h2>
-                    <div class="upload-form">
-                        <div class="camera-section">
-                            <div class="camera-preview">
-                                <span class="material-icons camera-icon">photo_camera</span>
-                                <p>Tap to capture or upload food image</p>
-                                <button class="camera-btn">
-                                    <span class="material-icons">add_a_photo</span>
-                                    Add Photo
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Food Item</label>
-                                <input type="text" placeholder="e.g., Rice & Dal" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Quantity</label>
-                                <input type="text" placeholder="e.g., 5kg" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Expiry Time</label>
-                                <select class="form-control">
-                                    <option>1 hour</option>
-                                    <option>2 hours</option>
-                                    <option>4 hours</option>
-                                    <option>6 hours</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Dietary Tags</label>
-                                <div class="tag-selector">
-                                    <span class="tag">Vegetarian</span>
-                                    <span class="tag">Vegan</span>
-                                    <span class="tag">Gluten-free</span>
-                                    <span class="tag">Organic</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button class="btn btn--primary btn--full-width upload-btn">
-                            <span class="material-icons">cloud_upload</span>
-                            Post Donation
-                        </button>
-                    </div>
-                </section>
-
-                <!-- Active Donations -->
-                <section class="donations-section glass-card">
-                    <h2>📋 Active Donations</h2>
-                    <div class="donations-list" id="providerDonations">
-                        <!-- Populated by JS -->
-                    </div>
-                </section>
-
-                <!-- Impact Tracker -->
-                <section class="impact-section glass-card">
-                    <h2>📊 Your Impact</h2>
-                    <div class="impact-grid">
-                        <div class="impact-card">
-                            <div class="impact-icon">🍽️</div>
-                            <div class="impact-value" data-counter="150">150</div>
-                            <div class="impact-label">Meals Donated</div>
-                        </div>
-                        <div class="impact-card">
-                            <div class="impact-icon">🌱</div>
-                            <div class="impact-value" data-counter="75.5">75.5kg</div>
-                            <div class="impact-label">CO₂ Saved</div>
-                        </div>
-                        <div class="impact-card">
-                            <div class="impact-icon">⭐</div>
-                            <div class="impact-value" data-counter="4.8">4.8</div>
-                            <div class="impact-label">Rating</div>
-                        </div>
-                        <div class="impact-card">
-                            <div class="impact-icon">🏆</div>
-                            <div class="impact-value" data-counter="12">12</div>
-                            <div class="impact-label">Badges Earned</div>
-                        </div>
-                    </div>
-                    <div class="impact-chart">
-                        <canvas id="providerChart"></canvas>
-                    </div>
-                </section>
-
-                <!-- Achievements -->
-                <section class="achievements-section glass-card">
-                    <h2>🏆 Achievements</h2>
-                    <div class="badges-container" id="providerBadges">
-                        <!-- Populated by JS -->
-                    </div>
-                </section>
+            <div class="provider-dashboard" id="providerContent">
+                <!-- Content will be dynamically loaded based on bottom nav -->
             </div>
         </div>
 
         <nav class="bottom-nav provider-theme">
-            <button class="nav-item active" data-section="dashboard">
+            <button class="nav-item active" data-section="dashboard" onclick="switchProviderSection('dashboard')">
                 <span class="material-icons">dashboard</span>
                 <span>Dashboard</span>
             </button>
-            <button class="nav-item" data-section="donations">
+            <button class="nav-item" data-section="upload" onclick="switchProviderSection('upload')">
+                <span class="material-icons">cloud_upload</span>
+                <span>Upload</span>
+            </button>
+            <button class="nav-item" data-section="donations" onclick="switchProviderSection('donations')">
                 <span class="material-icons">restaurant</span>
-                <span>Donations</span>
+                <span>Manage</span>
             </button>
-            <button class="nav-item" data-section="impact">
-                <span class="material-icons">eco</span>
-                <span>Impact</span>
-            </button>
-            <button class="nav-item" data-section="profile">
+            <button class="nav-item" data-section="profile" onclick="switchProviderSection('profile')">
                 <span class="material-icons">person</span>
                 <span>Profile</span>
             </button>
@@ -222,86 +132,36 @@
                 <h1>Find Food</h1>
             </div>
             <div class="nav-right">
-                <button class="filter-btn">
+                <button class="filter-btn" onclick="toggleFilters()">
                     <span class="material-icons">filter_list</span>
                 </button>
-                <button class="map-btn">
-                    <span class="material-icons">map</span>
+                <button class="notification-btn" onclick="showNotifications()">
+                    <span class="material-icons">notifications</span>
+                    <span class="notification-badge" id="notificationBadge">3</span>
                 </button>
             </div>
         </nav>
 
         <div class="main-content">
-            <div class="consumer-dashboard">
-                <!-- Search & Filters -->
-                <section class="search-section glass-card">
-                    <div class="search-bar">
-                        <span class="material-icons">search</span>
-                        <input type="text" placeholder="Search food items..." class="search-input">
-                    </div>
-                    <div class="filter-chips">
-                        <span class="chip active">All</span>
-                        <span class="chip">Vegetarian</span>
-                        <span class="chip">Vegan</span>
-                        <span class="chip">< 2km</span>
-                        <span class="chip">Available Now</span>
-                    </div>
-                </section>
-
-                <!-- Available Food -->
-                <section class="food-section glass-card">
-                    <h2>🍽️ Available Food</h2>
-                    <div class="food-grid" id="consumerFoodList">
-                        <!-- Populated by JS -->
-                    </div>
-                </section>
-
-                <!-- Map View -->
-                <section class="map-section glass-card">
-                    <h2>🗺️ Map View</h2>
-                    <div class="map-container">
-                        <div class="map-placeholder">
-                            <span class="material-icons map-icon">location_on</span>
-                            <p>Interactive map showing nearby food donations</p>
-                            <div class="map-markers">
-                                <div class="marker" style="top: 30%; left: 40%;">
-                                    <span class="material-icons">restaurant</span>
-                                </div>
-                                <div class="marker" style="top: 60%; left: 60%;">
-                                    <span class="material-icons">restaurant</span>
-                                </div>
-                                <div class="marker" style="top: 45%; left: 25%;">
-                                    <span class="material-icons">restaurant</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Request History -->
-                <section class="history-section glass-card">
-                    <h2>📜 Request History</h2>
-                    <div class="history-list" id="consumerHistory">
-                        <!-- Populated by JS -->
-                    </div>
-                </section>
+            <div class="consumer-dashboard" id="consumerContent">
+                <!-- Content will be dynamically loaded -->
             </div>
         </div>
 
         <nav class="bottom-nav consumer-theme">
-            <button class="nav-item active" data-section="browse">
+            <button class="nav-item active" data-section="browse" onclick="switchConsumerSection('browse')">
                 <span class="material-icons">restaurant_menu</span>
                 <span>Browse</span>
             </button>
-            <button class="nav-item" data-section="map">
+            <button class="nav-item" data-section="map" onclick="switchConsumerSection('map')">
                 <span class="material-icons">map</span>
                 <span>Map</span>
             </button>
-            <button class="nav-item" data-section="requests">
+            <button class="nav-item" data-section="requests" onclick="switchConsumerSection('requests')">
                 <span class="material-icons">shopping_cart</span>
                 <span>Requests</span>
             </button>
-            <button class="nav-item" data-section="profile">
+            <button class="nav-item" data-section="profile" onclick="switchConsumerSection('profile')">
                 <span class="material-icons">person</span>
                 <span>Profile</span>
             </button>
@@ -320,93 +180,35 @@
             <div class="nav-right">
                 <div class="level-badge">
                     <span class="level-icon">🏆</span>
-                    <span class="level-text">Gold</span>
+                    <span class="level-text">Platinum</span>
                 </div>
                 <div class="hours-counter">
-                    <span class="counter-value" data-counter="45">45h</span>
+                    <span class="counter-value" data-counter="68">68h</span>
                     <span class="counter-label">logged</span>
                 </div>
             </div>
         </nav>
 
         <div class="main-content">
-            <div class="volunteer-dashboard">
-                <!-- Available Tasks -->
-                <section class="tasks-section glass-card">
-                    <h2>🎯 Available Tasks</h2>
-                    <div class="tasks-list" id="volunteerTasks">
-                        <!-- Populated by JS -->
-                    </div>
-                </section>
-
-                <!-- Learning Center -->
-                <section class="learning-section glass-card">
-                    <h2>📚 Learning Center</h2>
-                    <div class="quiz-container">
-                        <div class="quiz-card">
-                            <h3>Food Safety Quiz</h3>
-                            <p>Test your knowledge on safe food handling practices</p>
-                            <div class="quiz-progress">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 60%"></div>
-                                </div>
-                                <span>6/10 completed</span>
-                            </div>
-                            <button class="btn btn--outline">Continue Quiz</button>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Service Hours & Certificates -->
-                <section class="certificates-section glass-card">
-                    <h2>📜 Service & Certificates</h2>
-                    <div class="service-stats">
-                        <div class="stat-card">
-                            <div class="stat-icon">⏱️</div>
-                            <div class="stat-value">45</div>
-                            <div class="stat-label">Hours Logged</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">✅</div>
-                            <div class="stat-value">23</div>
-                            <div class="stat-label">Tasks Completed</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">📜</div>
-                            <div class="stat-value">3</div>
-                            <div class="stat-label">Certificates</div>
-                        </div>
-                    </div>
-                    <button class="btn btn--primary generate-cert-btn">
-                        <span class="material-icons">get_app</span>
-                        Generate Certificate
-                    </button>
-                </section>
-
-                <!-- Leaderboard -->
-                <section class="leaderboard-section glass-card">
-                    <h2>🏆 Leaderboard</h2>
-                    <div class="leaderboard-list" id="volunteerLeaderboard">
-                        <!-- Populated by JS -->
-                    </div>
-                </section>
+            <div class="volunteer-dashboard" id="volunteerContent">
+                <!-- Content will be dynamically loaded -->
             </div>
         </div>
 
         <nav class="bottom-nav volunteer-theme">
-            <button class="nav-item active" data-section="tasks">
+            <button class="nav-item active" data-section="tasks" onclick="switchVolunteerSection('tasks')">
                 <span class="material-icons">assignment</span>
                 <span>Tasks</span>
             </button>
-            <button class="nav-item" data-section="learning">
+            <button class="nav-item" data-section="map" onclick="switchVolunteerSection('map')">
+                <span class="material-icons">map</span>
+                <span>Task Map</span>
+            </button>
+            <button class="nav-item" data-section="learning" onclick="switchVolunteerSection('learning')">
                 <span class="material-icons">school</span>
                 <span>Learning</span>
             </button>
-            <button class="nav-item" data-section="certificates">
-                <span class="material-icons">card_membership</span>
-                <span>Certificates</span>
-            </button>
-            <button class="nav-item" data-section="profile">
+            <button class="nav-item" data-section="profile" onclick="switchVolunteerSection('profile')">
                 <span class="material-icons">person</span>
                 <span>Profile</span>
             </button>
@@ -424,119 +226,38 @@
                     <h2>Admin Panel</h2>
                 </div>
                 <nav class="sidebar-nav">
-                    <button class="nav-item active" data-section="dashboard">
+                    <button class="nav-item active" data-section="dashboard" onclick="switchAdminSection('dashboard')">
                         <span class="material-icons">dashboard</span>
                         <span>Dashboard</span>
                     </button>
-                    <button class="nav-item" data-section="users">
+                    <button class="nav-item" data-section="users" onclick="switchAdminSection('users')">
                         <span class="material-icons">people</span>
                         <span>Users</span>
                     </button>
-                    <button class="nav-item" data-section="donations">
+                    <button class="nav-item" data-section="donations" onclick="switchAdminSection('donations')">
                         <span class="material-icons">restaurant</span>
                         <span>Donations</span>
                     </button>
-                    <button class="nav-item" data-section="analytics">
+                    <button class="nav-item" data-section="analytics" onclick="switchAdminSection('analytics')">
                         <span class="material-icons">analytics</span>
                         <span>Analytics</span>
                     </button>
-                    <button class="nav-item" data-section="reports">
-                        <span class="material-icons">assessment</span>
-                        <span>Reports</span>
+                    <button class="nav-item" data-section="monitoring" onclick="switchAdminSection('monitoring')">
+                        <span class="material-icons">monitor</span>
+                        <span>Monitoring</span>
                     </button>
                 </nav>
             </aside>
 
             <main class="admin-main">
-                <!-- Dashboard Overview -->
-                <section class="admin-dashboard">
-                    <div class="stats-grid">
-                        <div class="stat-card glass-card">
-                            <div class="stat-header">
-                                <span class="material-icons stat-icon">restaurant</span>
-                                <h3>Meals Saved</h3>
-                            </div>
-                            <div class="stat-value" data-counter="1247">1,247</div>
-                            <div class="stat-change positive">+12% from last week</div>
-                        </div>
-                        
-                        <div class="stat-card glass-card">
-                            <div class="stat-header">
-                                <span class="material-icons stat-icon">eco</span>
-                                <h3>Waste Reduced</h3>
-                            </div>
-                            <div class="stat-value" data-counter="623.5">623.5kg</div>
-                            <div class="stat-change positive">+8% from last week</div>
-                        </div>
-                        
-                        <div class="stat-card glass-card">
-                            <div class="stat-header">
-                                <span class="material-icons stat-icon">cloud</span>
-                                <h3>CO₂ Saved</h3>
-                            </div>
-                            <div class="stat-value" data-counter="311.75">311.75kg</div>
-                            <div class="stat-change positive">+15% from last week</div>
-                        </div>
-                        
-                        <div class="stat-card glass-card">
-                            <div class="stat-header">
-                                <span class="material-icons stat-icon">people</span>
-                                <h3>Active Users</h3>
-                            </div>
-                            <div class="stat-value" data-counter="89">89</div>
-                            <div class="stat-change positive">+5 new today</div>
-                        </div>
-                    </div>
-
-                    <!-- Charts Section -->
-                    <div class="charts-grid">
-                        <div class="chart-card glass-card">
-                            <h3>Weekly Food Distribution</h3>
-                            <div class="chart-container" style="position: relative; height: 300px;">
-                                <canvas id="adminChart1"></canvas>
-                            </div>
-                        </div>
-                        
-                        <div class="chart-card glass-card">
-                            <h3>User Engagement</h3>
-                            <div class="chart-container" style="position: relative; height: 300px;">
-                                <canvas id="adminChart2"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Activity Feed -->
-                    <div class="activity-section glass-card">
-                        <h3>Recent Activity</h3>
-                        <div class="activity-feed" id="adminActivity">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-
-                    <!-- Export Section -->
-                    <div class="export-section glass-card">
-                        <h3>Export Reports</h3>
-                        <div class="export-buttons">
-                            <button class="btn btn--outline">
-                                <span class="material-icons">file_download</span>
-                                Export PDF
-                            </button>
-                            <button class="btn btn--outline">
-                                <span class="material-icons">file_download</span>
-                                Export Excel
-                            </button>
-                            <button class="btn btn--primary">
-                                <span class="material-icons">analytics</span>
-                                Generate Report
-                            </button>
-                        </div>
-                    </div>
-                </section>
+                <div id="adminContent">
+                    <!-- Content will be dynamically loaded -->
+                </div>
             </main>
         </div>
     </div>
 
-    <!-- Modal for Food Details -->
+    <!-- Food Request Modal -->
     <div id="foodModal" class="modal hidden">
         <div class="modal-backdrop" onclick="hideFoodModal()"></div>
         <div class="modal-content glass-card">
@@ -551,17 +272,56 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn--outline modal-cancel" onclick="hideFoodModal()">Cancel</button>
-                <button class="btn btn--primary modal-confirm" onclick="requestFood(document.getElementById('foodModal').dataset.foodId)">Request Food</button>
+                <button class="btn btn--primary modal-confirm" id="modalConfirmBtn">Request Food</button>
             </div>
         </div>
     </div>
 
-    <!-- Notification Toast -->
+    <!-- Task Details Modal -->
+    <div id="taskModal" class="modal hidden">
+        <div class="modal-backdrop" onclick="hideTaskModal()"></div>
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 id="taskModalTitle">Task Details</h3>
+                <button class="modal-close" onclick="hideTaskModal()">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-body" id="taskModalBody">
+                <!-- Content populated by JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--outline modal-cancel" onclick="hideTaskModal()">Cancel</button>
+                <button class="btn btn--primary modal-confirm" id="taskModalConfirmBtn">Accept Task</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Panel -->
+    <div id="notificationPanel" class="notification-panel hidden">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="notification-close" onclick="hideNotifications()">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="notification-list" id="notificationList">
+            <!-- Notifications populated by JS -->
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
     <div id="toast" class="toast hidden">
         <div class="toast-content">
             <span class="toast-icon"></span>
             <span class="toast-message"></span>
         </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner hidden">
+        <div class="spinner"></div>
+        <p>Loading...</p>
     </div>
 
     <!-- Confetti Container -->
